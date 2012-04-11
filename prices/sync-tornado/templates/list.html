@@ -1,0 +1,48 @@
+<html>
+<body>
+Sync - Tornado
+
+<form action="/price"  method="post">
+    {% raw xsrf_form_html() %}
+    Houses that cost: <input type="text" name="price" />
+
+    <select name="date" >
+        {% for d in dates %}
+            <option>{{d}}</option>
+        {% end %}
+    </select>
+
+    <input type="submit" name="go" />
+</form>
+
+<form action="/postcode"  method="post">
+    {% raw xsrf_form_html() %}
+    Houses in Postcode (first part only):
+    <select name="postcode" >
+        {% for d in postcodes %}
+            <option>{{d}}</option>
+        {% end %}
+    </select>
+
+
+    <select name="date" >
+        {% for d in dates %}
+            <option>{{d}}</option>
+        {% end %}
+    </select>
+
+    <input type="submit" name="go" />
+</form>
+
+
+<p>price = {{price}} </p>
+<p>postcode = {{postcode}} </p>
+<p>quantity = {{data.count()}} </p>
+
+<h2>Data:</h2>
+{% for field in data %}
+    <p> {{ field['address'] }} : {{ field['price'] }} </p>
+{% end %}
+
+</body>
+</html>

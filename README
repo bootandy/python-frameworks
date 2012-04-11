@@ -1,0 +1,49 @@
+Notes:
+-------------
+
+This is a 'real world' test of python frameworks talking to mongodb.
+
+I am not loading any static files (css / js) etc - NgineX can serve them staticly.
+
+I am querying MongoDB and displaying the results as a simply layed out webpage.
+
+MongoDB is run on the same box as the python framework. 
+
+Would have liked to test Gevent on django as well but it is giving me grief.
+
+Data:
+------
+
+Included in data-loader/ is a python script that loads London houseprices from Zoopla. This fills mongodb with a load of data which simulates a more 'real world' test
+
+
+
+Learned:
+-------------
+
+Dont use reg ex in mongo queries they are __slow__
+
+Twisted for webpages is not pretty code.
+
+Async Mongo Drivers are faster than Synchronous Mongo drivers. Although they do not support all the functions that the Synchronous PyMongo driver does.
+
+Django is marginally slower than Twisted/Tornado using async drivers. 
+
+Django is slower when compared against a 'hello world' webpage that does not hit the database.
+
+
+TODO:
+-----------
+Run tests with MongoDB on different PC
+Test Gevent
+
+
+Dependencies:
+--------------
+
+async-tornado requires Asyncmongo:
+Warning: asyncmongo has a dependency on an *old* version of pymongo.
+
+async-twisted requires TxMongo::
+https://github.com/fiorix/mongo-async-python-driver
+

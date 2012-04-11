@@ -1,0 +1,25 @@
+<html xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://twistedmatrix.com/ns/twisted.web.template/0.1 ">
+    <body>
+        Async - Twisted - Short simple query
+
+        <select name='date'>
+            <option t:render="date_dropdown">
+                <t:slot name="date"/>
+            </option>
+        </select>
+        <select name='date'>
+            <option t:render="date_dropdown">
+                <t:slot name="date"/>
+            </option>
+        </select>
+
+        <h2>Data:</h2>
+        <p t:render="all_data">
+            <t:slot name="data_address"/>
+            <t:slot name="data_price"/>
+        </p>
+
+    </body>
+</html>

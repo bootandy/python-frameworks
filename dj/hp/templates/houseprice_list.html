@@ -1,0 +1,46 @@
+Sync - Django
+
+<form action="/price"  method="post">
+
+    Houses that cost: <input type="text" name="price" />
+
+    <select name="date" >
+        {% for d in dates %}
+            <option>{{d|date:"Y-m-d"}}</option>
+        {% endfor %}
+    </select>
+
+    <input type="submit" name="go" />
+</form>
+
+<form action="/postcode"  method="post">
+
+    Houses in Postcode (first part only):
+    <select name="postcode" >
+       {% for p in postcodes %}
+           <option>{{p}}</option>
+       {% endfor %}
+   </select>
+
+
+    <select name="date" >
+        {% for d in dates %}
+            <option>{{d|date:"Y-m-d"}}</option>
+        {% endfor %}
+    </select>
+
+    <input type="submit" name="go" />
+</form>
+
+
+<p>price = {{price}} </p>
+<p>postcode = {{postcode}} </p>
+<p>quantity = {{house_list.count}} </p>
+
+<h2>Data:</h2>
+
+{% for h in house_list %}
+  <p>
+    {{ h.address}} : {{ h.price}}
+  </p>
+{% endfor %}

@@ -1,0 +1,57 @@
+<html xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://twistedmatrix.com/ns/twisted.web.template/0.1 ">
+    <body>
+        Async - Twisted
+
+        <form action="/price" method="post">
+            Houses that cost:
+            <input type="text" name="price"/>
+
+            <select name='date'>
+                <option t:render="date_dropdown">
+                    <t:slot name="date"/>
+                </option>
+            </select>
+
+            <input type="submit" name="go"/>
+        </form>
+
+        <form action="/postcode" method="post">
+            Houses in Postcode (first part only):
+            <select name="postcode" >
+                <option t:render="postcodes_dropdown">
+                    <t:slot name="postcode"/>
+                </option>
+            </select>
+
+
+            <select name='date'>
+                <option t:render="date_dropdown">
+                    <t:slot name="date"/>
+                </option>
+            </select>
+
+            <input type="submit" name="go"/>
+        </form>
+
+
+        <p>price =
+            <t:transparent t:render="price"/>
+        </p>
+        <p>postcode =
+            <t:transparent t:render="postcode"/>
+        </p>
+
+        <h2>Data:</h2>
+        <p t:render="all_data">
+            <t:slot name="data_address"/>
+            <t:slot name="data_price"/>
+        </p>
+
+        <p>quantity =
+            <t:transparent t:render="datacount"/>
+        </p>
+
+    </body>
+</html>

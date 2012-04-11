@@ -1,0 +1,85 @@
+-- JMeter running on server ---
+'Server':
+ Mongodb v2.0.2
+ Twisted 12.0.0
+ Tornado 2.2
+
+ Drivers:
+    PyMongo: 2.1.1
+
+using reg ex qurey on the address field (this makes a slow mongo query)
+
+Run from command line:
+users:10 Times:10
+    Type                - Av    Max
+    Sync Tornado Small  - 1939  3321
+                 Big    - 2060  3866
+    Async Tornado Small - 584   758
+                 Big    - 612   785
+
+    Sync Twisted Small  - 2134  4346
+                 Big    - 2785  6737
+    Async Twisted Small - 530   1052
+                 Big    - 1226  1579
+
+
+16/03/2012
+--- Ubuntu upgraded to -- 11-10
+--- No more reg ex queries ---
+
+Indexes added to Mongo:
+users:10 Times:10
+    Sync Tornado small    - 57    102
+    Async Tornado small   - 31    70
+    Sync Twisted small    - 363   542
+    Async Twisted small   - 343   539
+    Django (development)  - 148   3035
+
+
+users:100 Times:10
+    Sync Tornado small    - 573   1197
+    Async Tornado small   - 367   559
+    Sync Twisted small    - 3317  9542
+    Async Twisted small   - 3448  5867
+    Django (development)    - 2497  76000
+
+Hello World webpage (No DB)
+users:100 Times:10
+    Twisted                 - 54    122
+    Tornado                 - 52    118
+    Django (development)    - 2222  52000
+    Django (mod_wsgi)       - 563   1842
+
+
+-- data lost --
+-- new data dump --
+03/04/2012
+                            - Av    Max
+users:100 Times:10
+small request
+    Django (mod_wsgi)       - 2801  4200
+    Async Twisted           - 2072  5751
+    Async Tornado           - 1520  2704
+
+users:100 Times:10
+small request
+    Django (mod_wsgi)       - 3069  4190
+    Async Twisted           - 1647  2608
+    Async Tornado           - 2054  3516
+
+users:100 Times:10
+Single row by id
+    Django (mod_wsgi)       - 575   1479
+    Async Twisted           -
+    Async Tornado           - 222   413
+
+09/04/2012
+
+users:100 Times:10
+small request
+    Django (mod_wsgi)       - 2983  3425
+    Async Twisted           - 2240  5807
+    Async Twisted [epoll]   - 2126  5899
+    Sync Twisted            - 5768  12868
+    Async Tornado           - 1483  2581
+    Sync Tornado            - 4573  6123
