@@ -3,7 +3,7 @@ Notes:
 
 This is a 'real world' test of python frameworks talking to mongodb.
 
-I am not loading any static files (css / js) etc - NgineX can serve them staticly.
+I am not loading any static files (css / js) etc - NginX can serve them staticly.
 
 I am querying MongoDB and displaying the results as a simply layed out webpage.
 
