@@ -1,7 +1,8 @@
 DATABASES = {
     'default' : {
         'ENGINE': 'django_mongodb_engine',
-        'NAME': 'houseprices'
+        'NAME': 'houseprices',
+        'HOST': '192.168.1.68'
     }
 }
 

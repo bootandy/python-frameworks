@@ -53,6 +53,7 @@ users:100 Times:10
 
 -- data lost --
 -- new data dump --
+-- incorrect indexes were created-----
 03/04/2012
                             - Av    Max
 users:100 Times:10
@@ -83,3 +84,15 @@ small request
     Sync Twisted            - 5768  12868
     Async Tornado           - 1483  2581
     Sync Tornado            - 4573  6123
+
+------------ Database moved to Laptop -------------
+-- Indexes corrected ---
+13/04/2012
+
+users:100 Times:10
+small request
+    Django (mod_wsgi)       - 1408  2202
+    Async Twisted           - 1769  5168
+    Sync Twisted            - 1796  6867
+    Async Tornado           - 557   920
+    Sync Tornado            - 1933  3980

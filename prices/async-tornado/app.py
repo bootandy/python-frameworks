@@ -22,6 +22,8 @@ from tornado.web import url
 define("port", default=8889, type=int)
 define("config_file", default="app_config.yml", help="app_config file")
 
+MONGO_SERVER = '192.168.1.68'
+
 # Application class
 class Application(tornado.web.Application):
   def __init__(self):
@@ -48,10 +50,10 @@ class Application(tornado.web.Application):
 
     tornado.web.Application.__init__(self, handlers,**settings) # debug=True ,
     # Connect to mongodb
-    self.db = asyncmongo.Client(pool_id='mydb', host='localhost', port=27017, maxcached=10, maxconnections=1000, dbname='houseprices')
+    self.db = asyncmongo.Client(pool_id='mydb', host=MONGO_SERVER, port=27017, maxcached=10, maxconnections=1000, dbname='houseprices')
 
     # asyncmonogo doesn't support 'distinct' so we pre load these dates
-    self.syncconnection = pymongo.Connection('localhost', 27017)
+    self.syncconnection = pymongo.Connection(MONGO_SERVER, 27017)
     self.syncdb = self.syncconnection ["houseprices"]
     self.legal_dates = self.syncdb.houses.distinct( 'dateadded')
     legal_postcodes_results = self.syncdb.houses.distinct( 'postcode_part')

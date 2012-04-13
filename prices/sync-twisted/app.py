@@ -10,6 +10,8 @@ from twisted.internet import reactor
 from twisted.web.server import NOT_DONE_YET
 from twisted.web.template import Element, renderer, XMLFile
 
+MONGO_SERVER = 'localhost'
+
 
 class DelayedResource(Resource):
   def _delayedRender(self, request):
@@ -150,7 +152,7 @@ class HelloHandler(Resource):
 
 
 def main():
-  connection = pymongo.Connection('localhost', 27017, max_pool_size=1000)
+  connection = pymongo.Connection(MONGO_SERVER, 27017, max_pool_size=1000)
   db = connection ["houseprices"]
 
   dates = db.houses.distinct( 'dateadded')

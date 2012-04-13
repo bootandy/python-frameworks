@@ -1,8 +1,8 @@
 import os, sys;  #raise Exception(sys.path)
 
-sys.path.append('/home/andy/dev/python/houseprices/dj/hp')
-sys.path.append('/home/andy/dev/python/houseprices/dj')
-sys.path.append('/home/andy/dev/python/houseprices')
+sys.path.append('/home/andy/dev/python/python-frameworks/dj/hp')
+sys.path.append('/home/andy/dev/python/python-frameworks/dj')
+sys.path.append('/home/andy/dev/python/python-frameworks')
 sys.path.append('/home/andy/dev/python/')
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'dj.settings'

@@ -21,6 +21,9 @@ from tornado.web import url
 # Third-party imports
 import pymongo
 
+MONGO_SERVER = '192.168.1.68'
+
+
 
 define("port", default=8888, type=int)
 define("config_file", default="app_config.yml", help="app_config file")
@@ -48,7 +51,7 @@ class Application(tornado.web.Application):
 
     tornado.web.Application.__init__(self, handlers,**settings) # debug=True ,
     # Connect to mongodb
-    self.connection = pymongo.Connection('localhost', 27017, max_pool_size=1000)
+    self.connection = pymongo.Connection(MONGO_SERVER, 27017, max_pool_size=1000)
     self.db = self.connection ["houseprices"]
 
     # we preload dates & postcode_parts

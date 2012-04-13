@@ -19,6 +19,8 @@ from twisted.internet import defer
 
 from simple_query import *
 
+MONGO_SERVER = '192.168.1.68'
+
 
 class ExampleElement(Element):
   loader = XMLFile(file('templates/basic.xml'))
@@ -172,12 +174,12 @@ def main():
 
 
 def setup():
-  _db = txmongo.lazyMongoConnectionPool()
+  _db = txmongo.lazyMongoConnectionPool(MONGO_SERVER, 27017)
   collection = _db.houseprices.houses
   root = resource.Resource()
 
   # Can not do a 'distinct' query with async mongo - so use a sync connection for this
-  sync_connection = pymongo.Connection('localhost', 27017, max_pool_size=10)
+  sync_connection = pymongo.Connection(MONGO_SERVER, 27017, max_pool_size=10)
   sync_db = sync_connection ["houseprices"]
 
   dates = sync_db.houses.distinct( 'dateadded')
