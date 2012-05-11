@@ -19,7 +19,9 @@ from twisted.internet import defer
 
 from simple_query import *
 
-MONGO_SERVER = '192.168.1.68'
+#MONGO_SERVER = '192.168.1.68'
+MONGO_SERVER = 'localhost'
+
 
 
 class ExampleElement(Element):
@@ -36,35 +38,6 @@ class ExampleElement(Element):
   def get_date_from_request(self):
     return datetime.datetime.strptime(self.request.args["date"][0], "%Y-%m-%d %H:%M:%S" )
 
-  @renderer
-  def all_data(self, request, tag):
-
-    search = {}
-    try :
-      search['dateadded'] = self.get_date_from_request()
-      pass
-    except Exception as e:
-      print "no datadded"
-      print e
-      return tag.clone().fillSlots( data_price='', data_address='' )
-
-    if "postcode" in self.request.args:
-      postcode =  self.request.args['postcode'][0]
-      search ['postcode_part'] = postcode
-
-    if "price" in self.request.args:
-      price =  int(self.request.args['price'][0])
-      search ['price'] = price
-
-    #f = txmongo.filter.sort( txmongo.filter.ASCENDING("address") )
-
-    #d = self.db.find(search, filter=f)
-    d = self.db.find(search)
-
-    d.addCallback(self._all_data_callback, request, tag)
-    d.addErrback(self._on_error_response, request, "this is passed as a param")
-    return d
-
 
   def _on_error_response(self, response, error, message):
     if error:
@@ -72,14 +45,14 @@ class ExampleElement(Element):
     print "response! "+message
 
 
-#  @renderer
+  #  @renderer
   def _all_data_callback(self, data, error, tag):
     self.data_count = len(data)
     if data:
       for d in data:
         yield tag.clone().fillSlots( data_price=str(d['price']), data_address=d['address'] )
 
-#
+      #
   @renderer
   def date_dropdown(self, request, tag):
     #print "calling date_dropdown"
@@ -117,8 +90,56 @@ class ExampleElement(Element):
       return tag('')
 
 
+class PriceExampleElement(ExampleElement):
+  @renderer
+  def all_data(self, request, tag):
 
-class ElementResource(Resource):
+    search = {}
+    try :
+      search['dateadded'] = self.get_date_from_request()
+      pass
+    except Exception as e:
+      print "no datadded"
+      print e
+      return tag.clone().fillSlots( data_price='', data_address='' )
+
+    price =  int(self.request.args['price'][0])
+    search ['price'] = price
+
+    #f = txmongo.filter.sort( txmongo.filter.ASCENDING("address") )
+    #d = self.db.find(search, filter=f)
+    d = self.db.find(search)
+
+    d.addCallback(self._all_data_callback, request, tag)
+    d.addErrback(self._on_error_response, request, "this is passed as a param")
+    return d
+
+class PostcodeExampleElement(ExampleElement):
+  @renderer
+  def all_data(self, request, tag):
+
+    search = {}
+    try :
+      search['dateadded'] = self.get_date_from_request()
+      pass
+    except Exception as e:
+      print "no datadded"
+      print e
+      return tag.clone().fillSlots( data_price='', data_address='' )
+
+    postcode =  self.request.args['postcode'][0]
+    search ['postcode_part'] = postcode
+
+    d = self.db.find(search)
+
+    d.addCallback(self._all_data_callback, request, tag)
+    d.addErrback(self._on_error_response, request, "this is passed as a param")
+    return d
+
+
+
+
+class PostcodeElementResource(Resource):
   isLeaf = True
 
   def __init__(self, dates, postcodes, db):
@@ -129,7 +150,7 @@ class ElementResource(Resource):
 
   def render_GET(self, request):
     #print 'ElementResource' + request
-    d = flattenString(request, ExampleElement(request, self.db, self.dates, self.postcodes))
+    d = flattenString(request, PostcodeExampleElement(request, self.db, self.dates, self.postcodes))
 
     def complete_request(html):
       request.write(html)
@@ -139,7 +160,7 @@ class ElementResource(Resource):
     return NOT_DONE_YET
 
   def render_POST(self, request):
-    d = flattenString(request, ExampleElement(request, self.db, self.dates, self.postcodes))
+    d = flattenString(request, PostcodeExampleElement(request, self.db, self.dates, self.postcodes))
 
     def complete_request(html):
       request.write(html)
@@ -147,6 +168,37 @@ class ElementResource(Resource):
 
     d.addCallback(complete_request)
     return NOT_DONE_YET
+
+class PriceElementResource(Resource):
+  isLeaf = True
+
+  def __init__(self, dates, postcodes, db):
+    Resource.__init__(self)
+    self.db = db
+    self.dates = dates
+    self.postcodes = postcodes
+
+  def render_GET(self, request):
+    #print 'ElementResource' + request
+    d = flattenString(request, PriceExampleElement(request, self.db, self.dates, self.postcodes))
+
+    def complete_request(html):
+      request.write(html)
+      request.finish()
+
+    d.addCallback(complete_request)
+    return NOT_DONE_YET
+
+  def render_POST(self, request):
+    d = flattenString(request, PriceExampleElement(request, self.db, self.dates, self.postcodes))
+
+    def complete_request(html):
+      request.write(html)
+      request.finish()
+
+    d.addCallback(complete_request)
+    return NOT_DONE_YET
+
 
 #class FaviconHandler(Resource):
 #  def render_GET(self, request):
@@ -196,8 +248,9 @@ def setup():
 
   #root = ElementResource(db)
   #root.putChild("/favicon.ico", FaviconHandler)
-  root.putChild("price", ElementResource(dates, postcodes, collection))
-  root.putChild("postcode", ElementResource(dates, postcodes, collection))
+  root.putChild("/", PriceElementResource(dates, postcodes, collection))
+  root.putChild("price", PriceElementResource(dates, postcodes, collection))
+  root.putChild("postcode", PostcodeElementResource(dates, postcodes, collection))
   root.putChild("single", SingleElementResource(dates, collection))
   root.putChild("hello", HelloHandler())
   factory = Site(root)

@@ -1,17 +1,24 @@
 -- JMeter running on server ---
+
 'Server':
- Mongodb v2.0.2
- Twisted 12.0.0
- Tornado 2.2
+Ubuntu 12-04
+  mongo 2.0.4
+  Twisted 12.0.0
+  Tornado 2.2.1
 
  Drivers:
     PyMongo: 2.1.1
+
+------------ Query types: ------------
+single row by id = Get a Mongodb entry by its ObjectId
+small request = Get 5 mongodb entries which match the postcode part (string match) and the dateadded (date match).
+
 
 
 ------------ Database running on Laptop -------------
 13/04/2012
 
-users:100 Times:10
+Users (Threads):100 Loop Count:10
 small request
     Django (mod_wsgi)       - 1408  2202
     Async Twisted           - 1769  5168
@@ -20,33 +27,40 @@ small request
     Sync Tornado            - 1933  3980
 
 
------ New Linux Box ----------
-Ubuntu 12-04
-mongo 2.0.4
-
+------------- MongoDB on Linux box ----------
 11/5/2012
-MongoDB on Linux box
 
 
-users:100 Times:10
+Users (Threads):100 Loop Count:10
 single row by id:
+  Sync Twisted              - 984   3250
+  Async Twisted             - 92    1011
 
   Full Async Tornado        - 127   233
   Full Sync Tornado         - 207   414
   Hybrid    Tornado         - 207   394
 
 
-users:500 Times:10
+Users (Threads):500 Loop Count:10
 single row by id:
+  Sync Twisted              - 3702  63119
+  Async Twisted             - 380  7073
 
   Full Async Tornado        - 530   1608
   Full Sync Tornado         - 982   1626
   Hybrid    Tornado         - 861   8363
 
 
-users:100 Times:10
+Users (Threads):100 Loop Count:10
 small request
+  Sync Twisted              - 1038  3485
+  Async Twisted             - 963   2581
+
   Full Async Tornado        - 120   162
   Full Sync Tornado         - 247   403
   Hybrid    Tornado         - 250   473
 
+Users (Threads):500 Loop Count:10
+hello world:
+  Async Twisted             - 138   3025
+  Async Tornado             - 114   1088

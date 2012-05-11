@@ -1,19 +1,12 @@
 import datetime
-import pymongo
-import re
-from bson.objectid import ObjectId
 
-from twisted.internet.defer import Deferred
-from twisted.web import resource, server
 from twisted.web._flatten import flattenString
-from twisted.web.server import Site
 from twisted.web.resource import Resource
-from twisted.internet import reactor
 
 from twisted.web.server import NOT_DONE_YET
 from twisted.web.template import Element, renderer, XMLFile
 import txmongo
-from twisted.internet import defer
+from txmongo._pymongo.objectid import ObjectId
 
 
 class SingleElement(Element):
@@ -35,7 +28,7 @@ class SingleElement(Element):
     # search['price'] = int(300000)
     # d = self.db.find( search )
 
-    o = ObjectId('4f7b5cec283f660e89000000')
+    o = ObjectId('4facedc7283f663b1c000013')
     search['_id'] = o
     d = self.db.find(search)
     #d = self.db.houses.find({'_id': ObjectId("4f7b5cec283f660e89000000") })

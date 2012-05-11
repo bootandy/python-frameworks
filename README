@@ -35,6 +35,8 @@ Learned:
 
 Dont use reg ex in mongo queries they are __slow__
 
+Dont table scan mongo - but if you have to create an index
+
 Twisted as a web framework is not pretty.
 
 Async Mongo Drivers are faster than Synchronous Mongo drivers. Although they do not support all the functions that the Synchronous PyMongo driver does.
@@ -43,6 +45,7 @@ Django is marginally slower than Twisted/Tornado using async drivers.
 
 Django is notably slower when compared against a 'hello world' webpage that does not hit the database.
 
+Tornado is faster than Twisted for querying MongoDB. Twisted is as good as (or better than) Tornado for non database 'hello world' page generation and for simple 'get by ID' queries. I suspect that Twisted's Mongodb driver is not as good as Tornado's.
 
 TODO:
 -----------

@@ -1,8 +1,0 @@
-Dont speed test over WiFi :-)
-
-Dont use reg ex in mongo queries -> __slow__
-
-Dont table scan mongo, but if you have to create an index
-
-using twisted for webpages isn't pretty.
-

@@ -2,7 +2,7 @@
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://twistedmatrix.com/ns/twisted.web.template/0.1 ">
     <body>
-        Async - Twisted - Short simple query
+        Async - Twisted - V Short simple query
 
         <select name='date'>
             <option t:render="date_dropdown">

@@ -1,4 +1,5 @@
 import datetime
+from bson.objectid import ObjectId
 from pymongo.cursor import Cursor
 import re
 import pymongo
@@ -28,6 +29,8 @@ class DelayedResource(Resource):
     return NOT_DONE_YET
 
 
+
+
 class ExampleElement(Element):
   loader = XMLFile(file('templates/basic.xml'))
 
@@ -41,26 +44,6 @@ class ExampleElement(Element):
 
   def get_date_from_request(self):
     return datetime.datetime.strptime(self.request.args["date"][0], "%Y-%m-%d %H:%M:%S" )
-
-
-  def load_data(self):
-    search = {}
-    try :
-      search['dateadded'] = self.get_date_from_request()
-    except Exception as e:
-      print "no datadded"
-      print e
-      return None
-
-    if "postcode" in self.request.args:
-      postcode =  self.request.args['postcode'][0]
-      search ['postcode_part'] = postcode
-
-    if "price" in self.request.args:
-      price =  int(self.request.args['price'][0])
-      search ['price'] = price
-
-    return self.db.houses.find( search )
 
 
   @renderer
@@ -103,7 +86,44 @@ class ExampleElement(Element):
 
 
 
-class ElementResource(Resource):
+class PostcodeElement(ExampleElement):
+  def load_data(self):
+    search = {}
+    try :
+      search['dateadded'] = self.get_date_from_request()
+    except Exception as e:
+      print "no datadded"
+      print e
+      return None
+
+    postcode =  self.request.args['postcode'][0]
+    search ['postcode_part'] = postcode
+
+    return self.db.houses.find( search )
+
+class PriceElement(ExampleElement):
+
+  def load_data(self):
+    search = {}
+    try :
+      search['dateadded'] = self.get_date_from_request()
+    except Exception as e:
+      print "no datadded"
+      print e
+      return None
+
+    price =  int(self.request.args['price'][0])
+    search ['price'] = price
+
+    return self.db.houses.find( search )
+
+class SingleElement(ExampleElement):
+  def load_data(self):
+    return self.db.houses.find({'_id': ObjectId('4facedc7283f663b1c000013') } )
+
+
+
+class PostcodeElementResource(Resource):
   isLeaf = True
 
   def __init__(self, db, postcodes, dates):
@@ -114,7 +134,7 @@ class ElementResource(Resource):
 
   def render_GET(self, request):
     #print 'ElementResource' + request
-    d = flattenString(request, ExampleElement(request, self.db, self.dates, self.postcodes))
+    d = flattenString(request, PostcodeElement(request, self.db, self.dates, self.postcodes))
 
     def complete_request(html):
       request.write(html)
@@ -124,7 +144,7 @@ class ElementResource(Resource):
     return NOT_DONE_YET
 
   def render_POST(self, request):
-    d = flattenString(request, ExampleElement(request, self.db, self.dates, self.postcodes))
+    d = flattenString(request, PostcodeElement(request, self.db, self.dates, self.postcodes))
 
     def complete_request(html):
       request.write(html)
@@ -132,6 +152,39 @@ class ElementResource(Resource):
 
     d.addCallback(complete_request)
     return NOT_DONE_YET
+
+
+class PriceElementResource(Resource):
+  isLeaf = True
+
+  def __init__(self, db, postcodes, dates):
+    Resource.__init__(self)
+    self.db = db
+    self.dates = dates
+    self.postcodes = postcodes
+
+  def render_GET(self, request):
+    #print 'ElementResource' + request
+    d = flattenString(request, PriceElement(request, self.db, self.dates, self.postcodes))
+
+    def complete_request(html):
+      request.write(html)
+      request.finish()
+
+    d.addCallback(complete_request)
+    return NOT_DONE_YET
+
+  def render_POST(self, request):
+    d = flattenString(request, PriceElement(request, self.db, self.dates, self.postcodes))
+
+    def complete_request(html):
+      request.write(html)
+      request.finish()
+
+    d.addCallback(complete_request)
+    return NOT_DONE_YET
+
+
 
 #class FaviconHandler(Resource):
 #  def render_GET(self, request):
@@ -168,9 +221,10 @@ def main():
   root = resource.Resource()
   #root = ElementResource(db)
   #root.putChild("/favicon.ico", FaviconHandler)
-  root.putChild("price", ElementResource(db, postcodes, dates))
-  root.putChild("postcode", ElementResource(db, postcodes, dates))
-  root.putChild("hello", HelloHandler())
+  root.putChild("/",        PriceElementResource(db, postcodes, dates))
+  root.putChild("price",    PriceElementResource(db, postcodes, dates))
+  root.putChild("postcode", PostcodeElementResource(db, postcodes, dates))
+  root.putChild("hello",    HelloHandler())
   factory = Site(root)
   reactor.listenTCP(8880, factory)
   reactor.run()
