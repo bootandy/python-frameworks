@@ -1,0 +1,6 @@
+# For ubuntu: apt-get install python-devel
+# For Twisted async driver: https://github.com/fiorix/mongo-async-python-driver
+tornado
+twisted
+asyncmongo
+BeautifulSoup

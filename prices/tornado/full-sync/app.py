@@ -1,5 +1,6 @@
 # Python imports
 import base64
+from bson.objectid import ObjectId
 import os
 
 # Tornado imports
@@ -21,7 +22,8 @@ from tornado.web import url
 # Third-party imports
 import pymongo
 
-MONGO_SERVER = '192.168.1.68'
+#MONGO_SERVER = '192.168.1.68'
+MONGO_SERVER = 'localhost'
 
 
 
@@ -35,6 +37,7 @@ class Application(tornado.web.Application):
     handlers = [
       url(r'/', IndexHandler, name='index'),
       url(r'/hello', HelloWorldHandler, name='hello'),
+      url(r'/single', SingleFieldHandler, name='single'),
       url(r'/price', PriceHandler, name='price'),
       url(r'/postcode', PostcodeHandler, name='postcode'),
     ]
@@ -45,7 +48,7 @@ class Application(tornado.web.Application):
       'template_path': os.path.join(os.path.dirname(__file__), 'templates'),
       "cookie_secret":  base64.b64encode(uuid.uuid4().bytes + uuid.uuid4().bytes),
       #'xsrf_cookies': True,
-      'debug':True,
+      'debug':False,
       'log_file_prefix':"tornado.log"
     }
 
@@ -114,6 +117,15 @@ class PostcodeHandler(BaseHandler):
     data = self.db.houses.find({'postcode_part':postcode, 'dateadded':date} )
 
     self.render('list.html', data=data, price='', postcode=postcode, dates=self.get_dates(), postcodes=self.get_postcodes())
+
+class SingleFieldHandler(BaseHandler):
+  def post(self):
+    response = self.db.houses.find({'_id': ObjectId('4facedc7283f663b1c000013') } )
+    self.render('list.html', data=response, price='', postcode='', dates=self.get_dates(), postcodes=self.get_postcodes() )
+
+  def get(self):
+    response = self.db.houses.find({'_id': ObjectId('4facedc7283f663b1c000013') } )
+    self.render('list.html', data=response, price='', postcode='', dates=self.get_dates(), postcodes=self.get_postcodes() )
 
 
 # to redirect log file run python with : --log_file_prefix=mylog
