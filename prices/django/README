@@ -1,0 +1,11 @@
+Setup Django + Apache + Mod_wsgi.
+
+Follow:
+
+http://code.google.com/p/modwsgi/wiki/QuickInstallationGuide
+
+- If you use virtualenv:
+	1) Dont sudo make - or you will use su's python
+	2) Edit /etc/apache2/apache2.conf
+		and add:
+		WSGIPythonHome /home/andy/dev/virtualenvs/ENV_NAME

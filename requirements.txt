@@ -4,3 +4,7 @@ tornado
 twisted
 asyncmongo
 BeautifulSoup
+
+# For django
+django_mongodb_engine
+django

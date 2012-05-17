@@ -1,11 +1,10 @@
 import os, sys;  #raise Exception(sys.path)
 
-sys.path.append('/home/andy/dev/python/python-frameworks/dj/hp')
-sys.path.append('/home/andy/dev/python/python-frameworks/dj')
-sys.path.append('/home/andy/dev/python/python-frameworks')
-sys.path.append('/home/andy/dev/python/')
+sys.path.append('/home/andy/dev/python/python-frameworks/prices/django/hp')
+sys.path.append('/home/andy/dev/python/python-frameworks/prices/django')
+sys.path.append('/home/andy/dev/python/python-frameworks/prices')
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'dj.settings'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 
 import django.core.handlers.wsgi
 application = django.core.handlers.wsgi.WSGIHandler()
