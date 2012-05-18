@@ -7,7 +7,15 @@ import pymongo
 from models import HousePrice
 from django.shortcuts import render_to_response
 from django_mongodb_engine.contrib import MongoDBManager
+
+
+# Hack to fix bug - confusion over pymongo & bson objectids
+import sys
+import bson.objectid
+pymongo.objectid = bson.objectid
+sys.modules["pymongo.objectid"] = bson.objectid
 from bson.objectid import ObjectId
+
 
 #class Dates:
 distinct_dates = None
@@ -81,7 +89,7 @@ def postcode(request):
 
 def single(request):
 
-  houses = HousePrice.objects.raw_query({'_id':ObjectId('4f7b5cec283f660e89000000')} )
+  houses = HousePrice.objects.raw_query({'_id':ObjectId('4facedc7283f663b1c000013')} )
 
   c = RequestContext(request, {
     'house_list':houses,

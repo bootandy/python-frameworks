@@ -15,27 +15,19 @@ small request = Get 5 mongodb entries which match the postcode part (string matc
 
 
 
------------- Database running on Laptop -------------
-13/04/2012
-
-Users (Threads):100 Loop Count:10
-small request
-    Django (mod_wsgi)       - 1408  2202
-    Async Twisted           - 1769  5168
-    Sync Twisted            - 1796  6867
-    Async Tornado           - 557   920
-    Sync Tornado            - 1933  3980
-
-
 ------------- MongoDB on Linux box ----------
 11/5/2012
+18/5/2012 - django+mod_wsgi
 
+Test Description
+  Framework1                 - Average Time     Worst Case Time
+  Framework2                 - Average Time     Worst Case Time
 
 Users (Threads):100 Loop Count:10
 single row by id:
   Sync Twisted              - 984   3250
   Async Twisted             - 92    1011
-
+  Django + mod_wsgi         - 335   4520
   Full Async Tornado        - 127   233
   Full Sync Tornado         - 207   414
   Hybrid    Tornado         - 207   394
@@ -44,7 +36,8 @@ single row by id:
 Users (Threads):500 Loop Count:10
 single row by id:
   Sync Twisted              - 3702  63119
-  Async Twisted             - 380  7073
+  Async Twisted             - 380   7073
+  Django + mod_wsgi         - 1210  16055
 
   Full Async Tornado        - 530   1608
   Full Sync Tornado         - 982   1626
@@ -55,7 +48,7 @@ Users (Threads):100 Loop Count:10
 small request
   Sync Twisted              - 1038  3485
   Async Twisted             - 963   2581
-
+  Django + mod_wsgi         - 402   3412
   Full Async Tornado        - 120   162
   Full Sync Tornado         - 247   403
   Hybrid    Tornado         - 250   473
@@ -64,3 +57,5 @@ Users (Threads):500 Loop Count:10
 hello world:
   Async Twisted             - 138   3025
   Async Tornado             - 114   1088
+  Django + mod_wsgi         - 743   15042
+
