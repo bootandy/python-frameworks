@@ -1,4 +1,4 @@
-#!/usr/bin/python
+!/usr/bin/python
 from gevent.wsgi import WSGIServer
 from application import application
 print 'Serving on 8000...'

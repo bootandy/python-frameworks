@@ -1,0 +1,6 @@
+AB test notes:
+
+ab -n 1000 -c 10 -p post "http://localhost/postcode"
+
+post:	postcode=EC3R&date=2012-08-01&go=Submit
+

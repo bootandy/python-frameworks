@@ -1,5 +1,14 @@
 import os, sys;  #raise Exception(sys.path)
 
+
+#Calculate the path based on the location of the WSGI script.
+apache_configuration= os.path.dirname(__file__)
+project = os.path.dirname(apache_configuration)
+workspace = os.path.dirname(project)
+sys.path.append(workspace) 
+
+
+
 sys.path.append('/home/andy/dev/python/python-frameworks/prices/django/hp')
 sys.path.append('/home/andy/dev/python/python-frameworks/prices/django')
 sys.path.append('/home/andy/dev/python/python-frameworks/prices')
@@ -8,6 +17,8 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 
 import django.core.handlers.wsgi
 application = django.core.handlers.wsgi.WSGIHandler()
+
+
 
 # import sys; 
 

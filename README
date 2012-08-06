@@ -1,3 +1,5 @@
+*** This project has got too messy - I need to summarize and refine it ***
+
 Notes:
 -------------
 
@@ -10,6 +12,8 @@ I am querying MongoDB and displaying the results as a simply layed out webpage.
 MongoDB is run on the same box as the python framework. 
 
 Would have liked to test Gevent on django as well but it is giving me grief.
+
+Tests run by TestPlan.jmx in JMeter - see Results.txt
 
 Frameworks to Test:
 -------------
