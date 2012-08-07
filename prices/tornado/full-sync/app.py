@@ -40,6 +40,7 @@ class Application(tornado.web.Application):
       url(r'/single', SingleFieldHandler, name='single'),
       url(r'/price', PriceHandler, name='price'),
       url(r'/postcode', PostcodeHandler, name='postcode'),
+      url(r'/main/([^\/]+)/', Req),
     ]
 
     #xsrf_cookies is for XSS protection add this to all forms: {{ xsrf_form_html() }}
@@ -48,7 +49,7 @@ class Application(tornado.web.Application):
       'template_path': os.path.join(os.path.dirname(__file__), 'templates'),
       "cookie_secret":  base64.b64encode(uuid.uuid4().bytes + uuid.uuid4().bytes),
       #'xsrf_cookies': True,
-      'debug':False,
+      'debug':True,
       'log_file_prefix':"tornado.log"
     }
 
@@ -126,6 +127,24 @@ class SingleFieldHandler(BaseHandler):
   def get(self):
     response = self.db.houses.find({'_id': ObjectId('4facedc7283f663b1c000013') } )
     self.render('list.html', data=response, price='', postcode='', dates=self.get_dates(), postcodes=self.get_postcodes() )
+
+
+class Req(tornado.web.RequestHandler):
+    def initialize(self):
+        self.supported_path = ['path_a', 'path_b', 'path_c']
+
+    def get(self, action):
+        print action
+        self.check(action)
+        self.send_error(401)
+
+    def post(self, action):
+        self.check(action)
+        self.send_error(401)
+
+    def check(self, action):
+        if action not in self.supported_path:
+            self.send_error(400)
 
 
 # to redirect log file run python with : --log_file_prefix=mylog

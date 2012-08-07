@@ -23,6 +23,7 @@ Test Description
   Framework1                 - Average Time     Worst Case Time
   Framework2                 - Average Time     Worst Case Time
 
+
 Users (Threads):100 Loop Count:10
 single row by id:
   Sync Twisted              - 984   3250
@@ -31,7 +32,10 @@ single row by id:
   Full Async Tornado        - 127   233
   Full Sync Tornado         - 207   414
   Hybrid    Tornado         - 207   394
+
   Django + mod_wsgi + post  - 501   1811 [Different data snapshot. 0.8% error rate]
+  Django + gunicorn + post  - 510   704 [Different data snapshot. 0% error rate. 17 workers]
+
 
 Users (Threads):500 Loop Count:10
 single row by id:
@@ -42,7 +46,9 @@ single row by id:
   Full Async Tornado        - 530   1608
   Full Sync Tornado         - 982   1626
   Hybrid    Tornado         - 861   8363
-  Django + mod_wsgi + post  - 1617  22837 [Different data snapshot. 2.54% error rate]
+
+  Django + mod_wsgi + post  - 2392 31K [Different data snapshot. 0.8% error rate]
+  Django + gunicorn + post  - 2892 66K [Different data snapshot. 0.24% error rate. 17 workers]
 
 
 Users (Threads):100 Loop Count:10
@@ -53,8 +59,11 @@ small request
   Full Async Tornado        - 120   162
   Full Sync Tornado         - 247   403
   Hybrid    Tornado         - 250   473
+
   Django + mod_wsgi + post  - 717   3006 [Different data snapshot. No index on table. 1.5% error rate]
   Django + mod_wsgi + post  - 540   2753 [Different data snapshot. Indexed. 1.3% error rate]
+  Django + gunicorn + post  - 555   763 [Different data snapshot. Indexed. 0% error rate. 17 workers]
+
 
 Users (Threads):500 Loop Count:10
 hello world:
